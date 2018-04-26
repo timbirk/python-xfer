@@ -4,12 +4,12 @@ A file transfer cli to rule them all.
 from setuptools import find_packages, setup
 
 dependencies = [
-    'click',
-    'botocore',
-    'boto3',
-    'pysftp',
-    'gnupg',
-    'logging-gelf'
+    'click==6.7',
+    'botocore==1.10.9',
+    'boto3==1.7.9',
+    'pysftp==0.2.9',
+    'gnupg==2.3.1',
+    'logging-gelf==0.0.9'
 ]
 
 setup(
