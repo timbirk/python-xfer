@@ -6,7 +6,11 @@ build/
 
 .tox/
 .coverage
+.pytest_cache/
+htmlcov/
 
 env/
 pyenv/
 venv/
+
+.DS_Store

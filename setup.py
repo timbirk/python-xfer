@@ -9,7 +9,8 @@ dependencies = [
     'boto3==1.7.9',
     'pysftp==0.2.9',
     'gnupg==2.3.1',
-    'logging-gelf==0.0.9'
+    'logging-gelf==0.0.9',
+    'PyYAML==3.12'
 ]
 
 setup(
@@ -40,13 +41,13 @@ setup(
         # 'Development Status :: 5 - Production/Stable',
         # 'Development Status :: 6 - Mature',
         # 'Development Status :: 7 - Inactive',
+        'Topic :: Utilities',
         'Environment :: Console',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: POSIX',
-        'Operating System :: MacOS',
-        'Operating System :: Unix',
-        'Operating System :: Microsoft :: Windows',
+        'Intended Audience :: Information Technology',
+        'Intended Audience :: System Administrators',
+        'License :: Public Domain',
+        'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
