@@ -1,10 +1,13 @@
 import click
+from .config import Config
 
 
 @click.command()
-@click.option('--as-cowboy', '-c', is_flag=True, help='Greet as a cowboy.')
-@click.argument('name', default='world', required=False)
-def main(name, as_cowboy):
+@click.option('--dry-run', '-n', is_flag=True, help='Output what would happen.')
+@click.option('--config', '-c', default='~/.xfer.yaml', help='Configuration file.')
+@click.argument('profile', required=True)
+def main(profile, dry_run, config):
     """A file transfer cli to rule them all."""
-    greet = 'Howdy' if as_cowboy else 'Hello'
-    click.echo('{0}, {1}.'.format(greet, name))
+    xfer_config = Config(config)
+
+    print(xfer_config)

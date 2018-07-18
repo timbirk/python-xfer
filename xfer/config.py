@@ -43,14 +43,35 @@ class Config(object):
     def _setup(self):
         """Reads in the xfer config file on sets config values appropriately
         """
+        try:
+            with open(self.config_filename, 'r') as stream:
+                try:
+                    user_config = yaml.safe_load(stream)
 
-        with open(self.config_filename, 'r') as stream:
-            try:
-                print(yaml.load(stream))
-            except yaml.YAMLError as exc:
-                print("Error in configuration file: %s" % exc)
-                if hasattr(exc, 'problem_mark'):
-                    mark = exc.problem_mark
-                    print("Error position: (%s:%s)" % (mark.line+1,
-                                                       mark.column+1))
-                raise yaml.YAMLError
+                    if user_config and 'profiles' in user_config:
+                        self.profiles = user_config['profiles']
+                    else:
+                        raise KeyError("Unable to find profiles in: %s" %
+                                       self.config_filename)
+
+                    if user_config and 'logging' in user_config:
+                        self.logging = user_config['logging']
+                    else:
+                        self.logging = self.default_config['logging']
+
+                    if user_config and 'monitoring' in user_config:
+                        self.monitoring = user_config['monitoring']
+                    else:
+                        self.monitoring = self.default_config['monitoring']
+
+                except yaml.YAMLError as exc:
+                    print("Error in configuration file: %s" % exc)
+                    if hasattr(exc, 'problem_mark'):
+                        mark = exc.problem_mark
+                        print("Error position: (%s:%s)" % (mark.line+1,
+                                                           mark.column+1))
+                    raise
+
+        except IOError:
+            print("Can't find or open config file: %s" % self.config_filename)
+            raise

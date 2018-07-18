@@ -10,20 +10,13 @@ def runner():
 
 def test_cli(runner):
     result = runner.invoke(cli.main)
-    assert result.exit_code == 0
-    assert not result.exception
-    assert result.output.strip() == 'Hello, world.'
+    assert result.exit_code == 2
+    assert 'Error: Missing argument "profile".' in result.output.strip()
+    assert result.exception
 
 
-def test_cli_with_option(runner):
-    result = runner.invoke(cli.main, ['--as-cowboy'])
-    assert not result.exception
-    assert result.exit_code == 0
-    assert result.output.strip() == 'Howdy, world.'
-
-
-def test_cli_with_arg(runner):
-    result = runner.invoke(cli.main, ['Tim'])
-    assert result.exit_code == 0
-    assert not result.exception
-    assert result.output.strip() == 'Hello, Tim.'
+def test_cli_with_profile_and_no_config(runner):
+    result = runner.invoke(cli.main, ['--config', 'nothere.yaml', 'test'])
+    assert result.exception
+    assert result.exit_code == -1
+    assert 'Can\'t find or open config file: nothere.yaml' in result.output.strip()
