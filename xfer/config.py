@@ -3,46 +3,46 @@
 import yaml
 from collections import defaultdict
 
-DEFAULT_CONFIG = """
-logging:
+DEFAULT_CONFIG = '''
+loggers:
   console:
     level: info
 monitoring:
   sensu:
     host: localhost
     port: 3030
-"""
+'''
 
 
 class Config(object):
 
     def __init__(self, config_filename='~/xfer.yaml'):
-        """
+        '''
         The Config class is intended to resolve configuration from sensible
         defaults and user provided configuration.
 
         :arg str config_filename: Name / path to the configuration file on which
             this config object.
-        """
+        '''
 
         self.config_filename = config_filename
 
         self.default_config = self._init_defaults()
 
-        self.logging = defaultdict(None)
+        self.loggers = defaultdict(None)
         self.monitoring = defaultdict(None)
         self.profiles = defaultdict(None)
 
         self._setup()
 
     def _init_defaults(self):
-        """Initialise default configuration from DEFAULT_CONFIG
-        """
+        '''Initialise default configuration from DEFAULT_CONFIG
+        '''
         return yaml.load(DEFAULT_CONFIG)
 
     def _setup(self):
-        """Reads in the xfer config file on sets config values appropriately
-        """
+        '''Reads in the xfer config file on sets config values appropriately
+        '''
         try:
             with open(self.config_filename, 'r') as stream:
                 try:
@@ -54,10 +54,10 @@ class Config(object):
                         raise KeyError("Unable to find profiles in: %s" %
                                        self.config_filename)
 
-                    if user_config and 'logging' in user_config:
-                        self.logging = user_config['logging']
+                    if user_config and 'loggers' in user_config:
+                        self.loggers = user_config['loggers']
                     else:
-                        self.logging = self.default_config['logging']
+                        self.loggers = self.default_config['loggers']
 
                     if user_config and 'monitoring' in user_config:
                         self.monitoring = user_config['monitoring']

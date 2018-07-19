@@ -1,5 +1,6 @@
 import click
 from .config import Config
+from .multilogger import MultiLogger
 
 
 @click.command()
@@ -8,6 +9,8 @@ from .config import Config
 @click.argument('profile', required=True)
 def main(profile, dry_run, config):
     """A file transfer cli to rule them all."""
-    xfer_config = Config(config)
+    xfer_config = Config(config_filename=config)
+    logger = MultiLogger(loggers=xfer_config.loggers).getLogger()
 
-    print(xfer_config)
+    logger.info("test log")
+    pass

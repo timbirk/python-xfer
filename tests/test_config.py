@@ -16,8 +16,9 @@ class ConfigTest(unittest.TestCase):
 
     def test_full_config(self):
         config = Config('tests/fixtures/xfer_full.yaml')
-        self.assertEqual(config.logging,
-                         {'gelf': {'host': 'localhost', 'post': 12021}})
+        self.assertEqual(config.loggers,
+                         {'gelf': {'post': 12021, 'host': 'localhost'},
+                          'console': {'level': 'info'}})
         self.assertEqual(config.monitoring,
                          {'sensu': {'port': 13030, 'host': '127.0.0.1'}})
         self.assertEqual(config.profiles, {'epayment_to_s3': None})

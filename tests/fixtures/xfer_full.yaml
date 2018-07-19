@@ -1,5 +1,7 @@
 ---
-logging:
+loggers:
+  console:
+    level: info
   gelf:
     host: localhost
     post: 12021
