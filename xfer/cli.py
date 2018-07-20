@@ -1,3 +1,5 @@
+import os
+import sys
 import click
 from .config import Config
 from .multilogger import MultiLogger
@@ -9,8 +11,16 @@ from .multilogger import MultiLogger
 @click.argument('profile', required=True)
 def main(profile, dry_run, config):
     """A file transfer cli to rule them all."""
+
     xfer_config = Config(config_filename=config)
     logger = MultiLogger(loggers=xfer_config.loggers).getLogger()
 
-    logger.info("test log")
+    logger.info("Running %s for profile: %s" % (
+        os.path.basename(sys.argv[0]),
+        profile
+    ))
+    if dry_run:
+        logger.warning("Dry run enabled: No actions will be taken on this run")
+
+    
     pass

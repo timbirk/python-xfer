@@ -35,7 +35,7 @@ class MultiLogger(logging.Handler):
             self.console = defaultdict(None)
 
         if 'file' in loggers:
-            self.file = loggers.file
+            self.file = loggers['file']
         else:
             self.file = defaultdict(None)
 
@@ -66,7 +66,13 @@ class MultiLogger(logging.Handler):
             self._logger.addHandler(console_handler)
 
         if self.file:
-            pass
+            file_handler = logging.FileHandler(self.file['path'])
+            file_handler.setFormatter(format)
+            if 'level' in self.file:
+                file_level = LOG_LEVELS[self.file['level'].upper()]
+                file_handler.setLevel(file_level)
+
+            self._logger.addHandler(file_handler)
 
         if self.gelf:
             gelf_handler = GELFUDPSocketHandler(host=self.gelf['host'],
