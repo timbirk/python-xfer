@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import yaml
-from collections import defaultdict
+from collections import OrderedDict
 
 DEFAULT_CONFIG = '''
 loggers:
@@ -29,16 +29,16 @@ class Config(object):
 
         self.default_config = self._init_defaults()
 
-        self.loggers = defaultdict(None)
-        self.monitoring = defaultdict(None)
-        self.profiles = defaultdict(None)
+        self.loggers = None
+        self.monitoring = None
+        self.profiles = None
 
         self._setup()
 
     def _init_defaults(self):
         '''Initialise default configuration from DEFAULT_CONFIG
         '''
-        return yaml.load(DEFAULT_CONFIG)
+        return ordered_load(DEFAULT_CONFIG)
 
     def _setup(self):
         '''Reads in the xfer config file on sets config values appropriately
@@ -46,21 +46,21 @@ class Config(object):
         try:
             with open(self.config_filename, 'r') as stream:
                 try:
-                    user_config = yaml.safe_load(stream)
+                    user_config = ordered_load(stream)
 
                     if user_config and 'profiles' in user_config:
-                        self.profiles = user_config['profiles']
+                        self.profiles = OrderedDict(user_config['profiles'])
                     else:
                         raise KeyError("Unable to find profiles in: %s" %
                                        self.config_filename)
 
                     if user_config and 'loggers' in user_config:
-                        self.loggers = user_config['loggers']
+                        self.loggers = OrderedDict(user_config['loggers'])
                     else:
                         self.loggers = self.default_config['loggers']
 
                     if user_config and 'monitoring' in user_config:
-                        self.monitoring = user_config['monitoring']
+                        self.monitoring = OrderedDict(user_config['monitoring'])
                     else:
                         self.monitoring = self.default_config['monitoring']
 
@@ -75,3 +75,19 @@ class Config(object):
         except IOError:
             print("Can't find or open config file: %s" % self.config_filename)
             raise
+
+
+def ordered_load(stream, Loader=yaml.SafeLoader, object_pairs_hook=OrderedDict):
+    """
+    Loads YAML to an OrderedDict rather than an unordered dict.
+    """
+    class OrderedLoader(Loader):
+        pass
+
+    def construct_mapping(loader, node):
+        loader.flatten_mapping(node)
+        return object_pairs_hook(loader.construct_pairs(node))
+    OrderedLoader.add_constructor(
+        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+        construct_mapping)
+    return yaml.load(stream, OrderedLoader)

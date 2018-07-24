@@ -3,6 +3,7 @@
 import unittest
 import yaml
 
+from collections import OrderedDict
 from xfer.config import Config
 
 
@@ -21,7 +22,7 @@ class ConfigTest(unittest.TestCase):
                           'console': {'level': 'info'}})
         self.assertEqual(config.monitoring,
                          {'sensu': {'port': 13030, 'host': '127.0.0.1'}})
-        self.assertEqual(config.profiles, {'epayment_to_s3': None})
+        self.assertIsInstance(config.profiles, OrderedDict)
 
     def test_config_with_bad_yaml(self):
         with self.assertRaises(yaml.YAMLError):
