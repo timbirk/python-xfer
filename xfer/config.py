@@ -8,9 +8,8 @@ loggers:
   console:
     level: info
 monitoring:
-  sensu:
-    host: localhost
-    port: 3030
+  host: localhost
+  port: 3030
 '''
 
 
@@ -27,20 +26,20 @@ class Config(object):
 
         self.config_filename = config_filename
 
-        self.default_config = self._init_defaults()
+        self.default_config = self.__init_defaults()
 
         self.loggers = None
         self.monitoring = None
         self.profiles = None
 
-        self._setup()
+        self.__setup()
 
-    def _init_defaults(self):
+    def __init_defaults(self):
         '''Initialise default configuration from DEFAULT_CONFIG
         '''
         return ordered_load(DEFAULT_CONFIG)
 
-    def _setup(self):
+    def __setup(self):
         '''Reads in the xfer config file on sets config values appropriately
         '''
         try:

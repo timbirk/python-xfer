@@ -21,7 +21,7 @@ class ConfigTest(unittest.TestCase):
                          {'gelf': {'post': 12021, 'host': 'localhost'},
                           'console': {'level': 'info'}})
         self.assertEqual(config.monitoring,
-                         {'sensu': {'port': 13030, 'host': '127.0.0.1'}})
+                         {'port': 13030, 'host': '127.0.0.1'})
         self.assertIsInstance(config.profiles, OrderedDict)
 
     def test_config_with_bad_yaml(self):

@@ -6,9 +6,8 @@ loggers:
     host: localhost
     post: 12021
 monitoring:
-  sensu:
-    host: 127.0.0.1
-    port: 13030
+  host: 127.0.0.1
+  port: 13030
 profiles:
   files_to_s3:
     src:
