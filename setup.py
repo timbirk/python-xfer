@@ -16,7 +16,7 @@ dependencies = [
 
 setup(
     name='xtransfer',
-    version='0.1.0',
+    version='0.0.1',
     url='https://github.com/timbirk/python-xtransfer',
     license='BSD',
     author='Tim Birkett',
