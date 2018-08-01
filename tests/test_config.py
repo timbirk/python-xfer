@@ -17,7 +17,7 @@ class ConfigTest(unittest.TestCase):
 
     def test_full_config(self):
         config = Config('tests/fixtures/xfer_full.yaml')
-        self.assertEqual(config.work_dir, '/opt/xfer')
+        self.assertEqual(config.work_dir, 'tests/fixtures/files/work_dir')
         self.assertEqual(config.loggers,
                          {'gelf': {'post': 12021, 'host': 'localhost'},
                           'console': {'level': 'info'}})

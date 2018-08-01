@@ -15,4 +15,5 @@ venv/
 
 .DS_Store
 
-tests/fixtures/work_dir
+tests/fixtures/files/work_dir
+tests/fixtures/files/backup

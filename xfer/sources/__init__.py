@@ -13,27 +13,33 @@ class Source(object):
         self.backup = backup
         self.cleanup = cleanup
         self.dry_run = dry_run
+        self.working_files = []
 
     def get(self):
-        self.__fetch()
+        file_list = self.__get_file_list()
+        self.working_files = self.__fetch(file_list)
         if self.backup:
-            self.__backup()
+            self.__backup(file_list)
         else:
             logger.warning("src backup disabled")
         if self.cleanup:
-            self.__cleanup()
+            self.__cleanup(file_list)
         else:
-            logger.info("src cleanup disabled")
+            logger.warning("src cleanup disabled")
+        return self.working_files
 
+    def __get_file_list(self):
+        logger.warning("getting file list")
+        return self.get_file_list()
 
-    def __fetch(self):
-        logger.info("fetching from src")
-        self.do_fetch()
+    def __fetch(self, file_list):
+        logger.warning("fetching from src")
+        return self.do_fetch(file_list)
 
-    def __backup(self):
-        logger.info("creating src backup")
-        self.do_backup()
+    def __backup(self, file_list):
+        logger.warning("creating src backup")
+        self.do_backup(file_list)
 
-    def __cleanup(self):
+    def __cleanup(self, file_list):
         logger.warning("cleaning up src")
-        self.do_cleanup()
+        self.do_cleanup(file_list)

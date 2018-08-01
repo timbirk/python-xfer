@@ -1,11 +1,12 @@
 import os
 import sys
+import errno
 import click
 from .config import Config
 from .multilogger import MultiLogger
 from .monitoring import Monitoring
-from .sources import Source
 from .sources.file import FileSource
+
 
 @click.command()
 @click.option('--dry-run', '-n', is_flag=True, help='Output what would happen.')
@@ -26,7 +27,7 @@ def main(profile, dry_run, config):
             (profile, config))
         sys.exit(1)
 
-    logger.info("profile %s running" % (profile))
+    logger.warning("profile %s running" % profile)
 
     if dry_run:
         logger.warning("dry_run enabled")
@@ -51,8 +52,30 @@ def main(profile, dry_run, config):
             % profile)
         sys.exit(1)
 
-    if 'file' in run_src:
-        work_files = FileSource(work_dir=xfer_config.work_dir,
-                                **run_src['file']).get()
+    working_directory = os.path.join(xfer_config.work_dir, profile)
+    try:
+        if not os.path.isdir(working_directory):
+            logger.warning("creating working directory %s" % working_directory)
+            try:
+                os.makedirs(working_directory)
+            except OSError as e:
+                if e.errno != errno.EEXIST:
+                    raise
 
+    except (IOError, OSError):
+        logger.critical(
+            "permission denied whilst creating working directory %s"
+            % working_directory)
+
+        monitoring.unknown(
+            message="permission denied whilst creating %s"
+            % working_directory)
+        sys.exit(1)
+
+    if 'file' in run_src:
+        working_files = FileSource(dry_run=dry_run,
+                                   work_dir=working_directory,
+                                   **run_src['file']).get()
+
+    print(working_files)
     pass
