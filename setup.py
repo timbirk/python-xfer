@@ -1,6 +1,7 @@
 """
 A file transfer cli to rule them all.
 """
+import codecs
 from setuptools import find_packages, setup
 
 dependencies = [
@@ -21,7 +22,8 @@ setup(
     author='Tim Birkett',
     author_email='tim.birkett@itv.com',
     description='A file transfer cli to rule them all.',
-    long_description=__doc__,
+    long_description=codecs.open('README.md', encoding='utf-8').read(),
+    long_description_content_type='text/markdown',
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
     zip_safe=False,
