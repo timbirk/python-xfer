@@ -1,4 +1,5 @@
 ---
+work_dir: tests/fixtures/work_dir
 loggers:
   console:
     level: info
@@ -12,7 +13,7 @@ profiles:
   files_to_s3:
     src:
       file:
-        path: /var/lib/files/*.csv
+        path: tests/fixtures/files/*.csv
         backup: true # Will backup to /var/lib/files/backup/yyyy/mm/dd
     filters:
       decrypt:

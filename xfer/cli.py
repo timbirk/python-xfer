@@ -4,7 +4,8 @@ import click
 from .config import Config
 from .multilogger import MultiLogger
 from .monitoring import Monitoring
-
+from .sources import Source
+from .sources.file import FileSource
 
 @click.command()
 @click.option('--dry-run', '-n', is_flag=True, help='Output what would happen.')
@@ -18,29 +19,40 @@ def main(profile, dry_run, config):
     monitoring = Monitoring(profile=profile, options=xfer_config.monitoring)
 
     if profile not in xfer_config.profiles:
-        logger.critical("xfer profile: %s not found in configuration: %s" % (
+        logger.critical("profile %s not found in configuration %s" % (
             profile, config))
-
         monitoring.unknown(
-            message="xfer profile: %s not found in configuration: %s" %
+            message="profile %s not found in configuration %s" %
             (profile, config))
         sys.exit(1)
 
-    logger.info("Running %s for profile: %s" % (
-        os.path.basename(sys.argv[0]),
-        profile
-    ))
+    logger.info("profile %s running" % (profile))
 
     if dry_run:
-        logger.warning("Dry run enabled: No actions will be taken on this run")
+        logger.warning("dry_run enabled")
 
     run_profile = xfer_config.profiles[profile]
 
     if 'src' not in run_profile:
-        logger.critical("profile: %s has no src configuration" % profile)
+        logger.critical("profile %s has no src configuration" % profile)
 
         monitoring.unknown(
-            message="profile: %s has no src configuration" % profile)
+            message="profile %s has no src configuration" % profile)
         sys.exit(1)
+
+    run_src = run_profile['src']
+    if len(run_src) > 1:
+        logger.critical(
+            "profile %s src configuration must only contain 1 src type"
+            % profile)
+
+        monitoring.unknown(
+            message="profile %s src configuration must only contain 1 src type"
+            % profile)
+        sys.exit(1)
+
+    if 'file' in run_src:
+        work_files = FileSource(work_dir=xfer_config.work_dir,
+                                **run_src['file']).get()
 
     pass

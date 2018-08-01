@@ -14,3 +14,5 @@ pyenv/
 venv/
 
 .DS_Store
+
+tests/fixtures/work_dir

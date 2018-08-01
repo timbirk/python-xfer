@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
+import os
 import yaml
+import tempfile
+
 from collections import OrderedDict
 
 DEFAULT_CONFIG = '''
@@ -31,6 +34,7 @@ class Config(object):
         self.loggers = None
         self.monitoring = None
         self.profiles = None
+        self.work_dir = None
 
         self.__setup()
 
@@ -63,6 +67,12 @@ class Config(object):
                     else:
                         self.monitoring = self.default_config['monitoring']
 
+                    if user_config and 'work_dir' in user_config:
+                        self.work_dir = user_config['work_dir']
+                    else:
+                        self.work_dir = os.path.join(tempfile.gettempdir(),
+                                                     'xfer')
+
                 except yaml.YAMLError as exc:
                     print("Error in configuration file: %s" % exc)
                     if hasattr(exc, 'problem_mark'):
@@ -78,7 +88,7 @@ class Config(object):
 
 def ordered_load(stream, Loader=yaml.SafeLoader, object_pairs_hook=OrderedDict):
     """
-    Loads YAML to an OrderedDict rather than an unordered dict.
+    Loads YAML to an OrderedDict rather than an (unordered) dict.
     """
     class OrderedLoader(Loader):
         pass
