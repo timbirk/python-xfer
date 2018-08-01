@@ -10,16 +10,16 @@ from .sources.file import FileSource
 
 @click.command()
 @click.option('--dry-run', '-n', is_flag=True, help='Output what would happen.')
-@click.option('--config', '-c', default='~/.xfer.yaml', help='Configuration file.')
+@click.option('--config', '-c', default='~/.xtransfer.yaml', help='Configuration file.')
 @click.argument('profile', required=True)
 def main(profile, dry_run, config):
     """A file transfer cli to rule them all."""
 
-    xfer_config = Config(config_filename=config)
-    logger = MultiLogger(loggers=xfer_config.loggers).getLogger()
-    monitoring = Monitoring(profile=profile, options=xfer_config.monitoring)
+    xtransfer_config = Config(config_filename=config)
+    logger = MultiLogger(loggers=xtransfer_config.loggers).getLogger()
+    monitoring = Monitoring(profile=profile, options=xtransfer_config.monitoring)
 
-    if profile not in xfer_config.profiles:
+    if profile not in xtransfer_config.profiles:
         logger.critical("profile %s not found in configuration %s" % (
             profile, config))
         monitoring.unknown(
@@ -32,7 +32,7 @@ def main(profile, dry_run, config):
     if dry_run:
         logger.warning("dry_run enabled")
 
-    run_profile = xfer_config.profiles[profile]
+    run_profile = xtransfer_config.profiles[profile]
 
     if 'src' not in run_profile:
         logger.critical("profile %s has no src configuration" % profile)
@@ -52,7 +52,7 @@ def main(profile, dry_run, config):
             % profile)
         sys.exit(1)
 
-    working_directory = os.path.join(xfer_config.work_dir, profile)
+    working_directory = os.path.join(xtransfer_config.work_dir, profile)
     try:
         if not os.path.isdir(working_directory):
             logger.warning("creating working directory %s" % working_directory)

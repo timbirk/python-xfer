@@ -4,7 +4,7 @@ import unittest
 import yaml
 
 from collections import OrderedDict
-from xfer.config import Config
+from xtransfer.config import Config
 
 
 class ConfigTest(unittest.TestCase):

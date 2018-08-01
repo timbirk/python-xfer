@@ -1,6 +1,6 @@
 import pytest
 from click.testing import CliRunner
-from xfer import cli
+from xtransfer import cli
 
 
 @pytest.fixture

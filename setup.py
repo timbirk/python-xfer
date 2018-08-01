@@ -14,9 +14,9 @@ dependencies = [
 ]
 
 setup(
-    name='xfer',
+    name='xtransfer',
     version='0.1.0',
-    url='https://github.com/timbirk/python-xfer',
+    url='https://github.com/timbirk/python-xtransfer',
     license='BSD',
     author='Tim Birkett',
     author_email='tim.birkett@itv.com',
@@ -29,7 +29,7 @@ setup(
     install_requires=dependencies,
     entry_points={
         'console_scripts': [
-            'xfer = xfer.cli:main',
+            'xtransfer = xtransfer.cli:main',
         ],
     },
     classifiers=[

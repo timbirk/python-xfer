@@ -18,7 +18,7 @@ monitoring:
 
 class Config(object):
 
-    def __init__(self, config_filename='~/xfer.yaml'):
+    def __init__(self, config_filename='~/xtransfer.yaml'):
         '''
         The Config class is intended to resolve configuration from sensible
         defaults and user provided configuration.
@@ -44,7 +44,7 @@ class Config(object):
         return ordered_load(DEFAULT_CONFIG)
 
     def __setup(self):
-        '''Reads in the xfer config file on sets config values appropriately
+        '''Reads in the xtransfer config file on sets config values appropriately
         '''
         try:
             with open(self.config_filename, 'r') as stream:
@@ -71,7 +71,7 @@ class Config(object):
                         self.work_dir = user_config['work_dir']
                     else:
                         self.work_dir = os.path.join(tempfile.gettempdir(),
-                                                     'xfer')
+                                                     'xtransfer')
 
                 except yaml.YAMLError as exc:
                     print("Error in configuration file: %s" % exc)
