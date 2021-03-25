@@ -11,7 +11,7 @@ dependencies = [
     'pysftp==0.2.9',
     'gnupg==2.3.1',
     'logging-gelf==0.0.9',
-    'PyYAML==3.12'
+    'PyYAML==5.4'
 ]
 
 setup(
